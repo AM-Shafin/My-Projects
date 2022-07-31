@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<conio.h>
+#include<stdlib.h>
 
 void addstudent();
 void studentrecord();
@@ -15,7 +16,7 @@ struct student{
     float per;
 };
 
-void main(){
+int main(){
     int choice;
     while (choice!=5)
     {
@@ -32,12 +33,53 @@ void main(){
         switch (choice)
         {
         case 1:
-            clrscr();
+            system("cls");
             addstudent();
-            clrscr();
+            system("cls");
+            break;
+
+        case 2:
+            system("cls");
+            studentrecord();
+            printf("\t\t\t\t press any key to exit.....\n");
+            getch();
+            system("cls");
+            break;
+
+        case 3:
+            system("cls");
+            searchstudent();
+            printf("\n\t\t\t\t Press any key to exit.....\n");
+            getch();
+            system("cls");
+            break;
+
+        case 4:
+            system("cls");
+            delete();
+            printf("\n\t\t\t\tPress any key to exit......\n");
+            getch();
+            system("cls");
+            break;
+
+        case 5:
+            system("cls");
+            printf("\n\t\t\t\tThank you, for using this software.\n\n");
+            exit(0);
+            break;
+
+        default:
+            system("cls");
+            getch();
+            printf("\n\t\t\t\t\tEnter a valid number\n\n");
+            printf("\t\t\t\tPress any key to continue.......");
+            getch();
+            system("cls");
             break;
         }
     }
+
+    return 0;
 }
 
 
@@ -47,9 +89,9 @@ void addstudent(){
     struct student info;
 
     do{
-        clrscr();
+        system("cls");
         printf("\t\t\t\t=====Add Students Info======\n\n\n");
-        fp=fopen("information.txt","a");
+        fp=fopen("information.txt","a"); //user can give any file name. Give a name with w or w/o extention.
         printf("\n\t\t\tEnter First Name    : ");
         scanf("%s", &info.first_name);
         printf("\n\t\t\tEnter Last Name     : ");
@@ -92,7 +134,7 @@ void studentrecord(){
         printf("\t\t\t\t_____________");
     }
 
-    while(ferad(&info,sizeof(struct student),1,fp))
+    while(fread(&info,sizeof(struct student),1,fp))
     {
         printf("\n\t\t\t\t Student Name : %s %s",info.first_name,info.last_name);
         printf("\n\t\t\t\tRoll NO       : %d",info.roll_no);
@@ -114,7 +156,7 @@ void searchstudent(){
     printf("\t\t\t\t======SEARCH STUDENTS RECORD======\n\n\n");
     printf("\t\t\tEnter the roll no : ");
     scanf("%d",&roll_no);
-    while (fread(&info.sizeof(struct student),1,fp)>0){
+    while (fread(&info,sizeof(struct student),1,fp)>0){
         if(info.roll_no==roll_no){
             found=1;
             printf("\n\n\t\t\tStudent Name : %s %s",info.first_name,info.last_name);
@@ -135,4 +177,32 @@ void searchstudent(){
 void delete(){
     struct student info;
     FILE *fp, *fp1;
+    int roll_no,found=0;
+    printf("\t\t\t\t=======DELETE STUDENTS RECORD=======\n\n\n");
+    fp=fopen("information.txt","r");
+    fp1=fopen("temp.txt","w");
+    printf("\t\t\tEnter the roll no : ");
+    scanf("%d",&roll_no);
+    if(fp==NULL){
+        fprintf(stderr,"can't open file\n");
+        exit(0);
+    }
+    while(fread(&info,sizeof(struct student),1,fp)){
+        if(info.roll_no == roll_no){
+            found=1;
+        }else{
+            fwrite(&info,sizeof(struct student),1,fp1);
+        }
+    }
+    fclose(fp);
+    fclose(fp1);
+    if(!found){
+        printf("\n\t\t\t\tRecord not found\n");
+    }
+    if(found){
+        remove("information.txt");
+        rename("temp.txt","information.txt");
+        printf("\n\t\t\t\tRecord deleted sucessfully");
+    }
+    getch();
 }
