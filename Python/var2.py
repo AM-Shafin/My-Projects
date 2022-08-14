@@ -8,6 +8,6 @@ print(a, b, c)
 type(c)
 print(a, b, c, "world")
 
-name = input("what is your name? ")
+name = input("what is your name?")
 print("Welcome to python,", name, "!")
 
