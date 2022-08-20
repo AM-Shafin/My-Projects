@@ -21,3 +21,5 @@ def separate(str):
 
 sentence = input('Input: ').strip()
 separate(sentence)
+
+

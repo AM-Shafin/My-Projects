@@ -16,3 +16,4 @@ if(ispalindrome(sen)):
     print('Yes')
 else:
     print('No')
+
